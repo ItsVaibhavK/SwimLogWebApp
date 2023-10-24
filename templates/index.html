@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <div id="welcome">
+        <h4>Welcome, {{ user }}. Here's your data:</h4>
+    </div>
+    <table class="table caption-top table-bordered table-dark table-hover table-striped">
+        <caption>*Existing swim data</caption>
+        <thead>
+            <tr>
+                <th>Session</th>
+                <th>Date / Time</th>
+                <th>Distance (meters)</th>
+                <th>Pool Length (meters)</th>
+                <th>Duration (minutes)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    <td>{{ row.session }}</td>
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.distance }}</td>
+                    <td>{{ row.pool }}</td>
+                    <td>{{ row.duration }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if total_distance < 1000 %}
+        <p id="data">Total distance swam: {{ total_distance }} meters</p>
+    {% else %}
+        <p id="data">Total distance swam: {{ total_distance/1000 }} kilometers</p>
+    {% endif %}
+
+    {% set average_distance = total_distance / total_sessions %}
+    {% if average_distance < 1000 %}
+        <p id="data">Average distance swam per session: {{ average_distance|round(2) }} meters</p>
+    {% else %}
+        <p id="data">Average distance swam per session: {{ (average_distance/1000)|round(2) }} kilometers"</p>
+    {% endif %}
+
+    {% if total_time < 60 %}
+        <p id="data">Total time spent swimming: {{ total_time }} minutes</p>
+    {% else %}
+        {% set total_hours = total_time // 60 %}
+        {% set total_minutes = total_time % 60 %}
+        <p id="data">Total time spent swimming: {{ total_hours }} hour(s), {{ total_minutes }} minute(s)</p>
+    {% endif %}
+
+    {% set average_time = (total_time / total_sessions)|int %}
+    {% if average_time < 60 %}
+        <p id="data">Average time spent swimming per session: {{ average_time }} minutes</p>
+    {% else %}
+        {% set average_hours = (average_time // 60)|int %}
+        {% set average_minutes = (average_time % 60)|int %}
+        <p id="data">Average time spent swimming per session: {{ average_hours }} hour(s), {{ average_minutes }} minute(s)</p>
+    {% endif %}
+
+    <button onclick="window.location.href='/add'" class="btn btn-outline-secondary" type="submit">Add New Data</button>
+    <p></p>
+    <button onclick="window.location.href='/modify'" class="btn btn-outline-warning" type="submit">Modify Existing Data</button>
+    <button onclick="window.location.href='/delete'" class="btn btn-outline-danger" type="submit">Delete Data</button>
+{% endblock %}

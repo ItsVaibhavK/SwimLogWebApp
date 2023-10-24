@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Delete Data
+{% endblock %}
+
+{% block main %}
+    <form action="/delete" method="post">
+        <div class="form-group mb-3">
+            <input class="form-control mx-auto w-auto" autofocus name="session_number" min="1" placeholder="Session number" type="number">
+        </div>
+        <button class="btn btn-outline-danger" type="submit">Delete data</button>
+    </form>
+{% endblock %}
